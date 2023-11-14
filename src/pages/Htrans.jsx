@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form"
 export default function Htrans(){
     const [history, setHistory] = useState()
     const [total, setTotal] = useState()
+    const [date, setDate] = useState("All Time")
     const {register, handleSubmit} = useForm();
 
     const fetchHtrans = async () =>{
@@ -25,8 +26,21 @@ export default function Htrans(){
         let queryDateSub = await axios.get(`http://localhost:3069/api/total/${date}`)
         setHistory(queryDate.data.htrans)
         setTotal(queryDateSub.data.subtotal)
+        if(!date){
+            setDate("All Time")
+        }else{
+            setDate(date)
+
+        }
 
     }
+
+    const formatDate = (dateString) => {
+        const options = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' };
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', options);
+      };
+
     useEffect(()=>{
         fetchHtrans()
         fetchTotal();
@@ -34,13 +48,11 @@ export default function Htrans(){
     return(
         <>
             <div className="w-4/6 mx-auto text-zinc-200 bg-zinc-800">
-                <h1 className="text-zinc-200 text-2xl font-medium">History Transaksi</h1> <br />
+                <h1 className="text-zinc-200 text-2xl font-medium">History Transaksi </h1> <br />
                 <div className='flex'>
                     <input type="date" name="" id="" onChange={(e)=>changeDate(e.target.value)} className='bg-zinc-700 p-1.5 rounded-md' />
-                   
-                    
-
                 </div>
+                <h1 className="text-zinc-200 text-2xl font-medium">{date == "All Time" ? date : formatDate(date)}</h1> <br />
 
                 <br />
 
