@@ -1,5 +1,7 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
+import axios from 'axios'
+
 
 
 export default function KasirPage(){
@@ -29,9 +31,29 @@ export default function KasirPage(){
         setSubtotal(tempHarga)
     }
 
-    const submitForm = data => {
-        console.log(data);
+
+    const insertData = async (nama, menu, jumlah, subtotal) =>{
+        console.log(nama, menu, jumlah, subtotal);
+        const temp = await axios.post(`http://localhost:3069/api/${nama}/${menu}/${jumlah}/${subtotal}`)
+        alert("Pesanan " + nama + " " + menu + " Masuk")
+
     }
+    const submitForm = async data => {
+        let menuString
+        if(menu == "telur_gulung"){
+            menuString = "Telur Gulung"
+        }else if(menu == "es_teh"){
+            menuString = "Es Teh"
+        }else if(menu == "es_teh_refill"){
+            menuString = "Es Teh (Refill)"
+        }else if(menu == "corn_dog_s"){
+            menuString = "Corn Dog Sosis"
+        }else if(menu == "corn_dog_m"){
+            menuString = "Corn Dog Mozzarella"
+        }
+        insertData(data.nama, menuString, data.jumlah, subtotal)
+    }
+    
 
     return(
         <>
@@ -43,7 +65,7 @@ export default function KasirPage(){
                             <input type="text" name="nama" id="nama" placeholder="Nama Customer" {...register("nama")} required className="text-white bg-zinc-700 p-2 rounded-md w-5/6" />
                         </div>
                         <div className="flex justify-center items-center my-10">
-                            <select name="" id="" {...register("menu")} placeholder="Menu" onChange={(e)=>{setMenu(e.target.value); console.log(e.target.value)}} required className="text-white bg-zinc-700 p-2 rounded-md w-5/6">
+                            <select name="" id="" {...register("menu")} defaultValue={"null"} placeholder="Menu" onChange={(e)=>{setMenu(e.target.value)}} required className="text-white bg-zinc-700 p-2 rounded-md w-5/6">
                                 <option value="null" disabled>-</option>
                                 <option value="telur_gulung">Telur Gulung - Rp.1000</option>
                                 <option value="es_teh">Es Teh - Rp.2000</option>
