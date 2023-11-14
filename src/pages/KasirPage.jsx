@@ -9,6 +9,7 @@ export default function KasirPage(){
 
     let tempHarga
     const handleChange = (val)=>{
+        
         if(val > 0){
             if(menu == "telur_gulung"){
                 tempHarga = 1000*val
@@ -42,13 +43,13 @@ export default function KasirPage(){
                             <input type="text" name="nama" id="nama" placeholder="Nama Customer" {...register("nama")} required className="text-white bg-zinc-700 p-2 rounded-md w-5/6" />
                         </div>
                         <div className="flex justify-center items-center my-10">
-                            <select name="" id="" defaultValue={"null"} placeholder="Menu" onChange={(e)=>setMenu(e.target.value)} required className="text-white bg-zinc-700 p-2 rounded-md w-5/6">
+                            <select name="" id="" {...register("menu")} placeholder="Menu" onChange={(e)=>{setMenu(e.target.value); console.log(e.target.value)}} required className="text-white bg-zinc-700 p-2 rounded-md w-5/6">
                                 <option value="null" disabled>-</option>
-                                <option value="telur_gulung"{...register("menu")}>Telur Gulung - Rp.1000</option>
-                                <option value="es_teh" {...register("menu")}>Es Teh - Rp.2000</option>
-                                <option value="es_teh_refill" {...register("menu")}>Es Teh (Refill) - Rp.1000</option>
-                                <option value="corn_dog_s" {...register("menu")}>Corn Dog Sosis - Rp.5000</option>
-                                <option value="corn_dog_m" {...register("menu")}>Corn Dog Mozzarela - Rp.10 000</option>
+                                <option value="telur_gulung">Telur Gulung - Rp.1000</option>
+                                <option value="es_teh">Es Teh - Rp.2000</option>
+                                <option value="es_teh_refill">Es Teh (Refill) - Rp.1000</option>
+                                <option value="corn_dog_s">Corn Dog Sosis - Rp.5000</option>
+                                <option value="corn_dog_m" >Corn Dog Mozzarela - Rp.10 000</option>
                             </select>
                         </div>
                         <div className="flex justify-center items-center my-10">
