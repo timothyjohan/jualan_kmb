@@ -1,8 +1,16 @@
+import Navbar from "./components/Navbar"
+import { Outlet } from "react-router-dom";
+
+
 function App() {
 
   return (
     <>
-      <h1>Welcome KMB</h1>
+      <div className="bg-zinc-800 h-screen">
+        <Navbar/>
+        <Outlet />
+
+      </div>
     </>
   )
 }
