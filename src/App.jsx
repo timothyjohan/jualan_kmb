@@ -6,7 +6,7 @@ function App() {
 
   return (
     <>
-      <div className="bg-zinc-800 h-screen">
+      <div className="bg-zinc-800 min-h-screen">
         <Navbar/>
         <Outlet />
 

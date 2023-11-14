@@ -3,24 +3,31 @@ import { useEffect, useState } from 'react'
 
 export default function Htrans(){
     const [history, setHistory] = useState()
+    const [total, setTotal] = useState()
     const fetchHtrans = async () =>{
         let temp = await axios.get(`http://localhost:3069/api/get`)
         setHistory(temp.data.htrans)
     }
+    const fetchTotal = async () =>{
+        let tempTotal = await axios.get('http://localhost:3069/api/total')
+        setTotal(tempTotal.data.subtotal)
+
+    }
 
     useEffect(()=>{
         fetchHtrans()
+        fetchTotal();
     },[])
     return(
         <>
-            <div className="w-4/6 mx-auto text-zinc-200">
+            <div className="w-4/6 mx-auto text-zinc-200 bg-zinc-800">
                 <h1 className="text-zinc-200 text-2xl font-medium">History Transaksi</h1>
                 <br />
 
                 {
                     history ? 
                     <>
-                    {console.log(history)}
+                        <h1 className='text-xl'>Hasil penghasilan : Rp. {total ? total : '-'}</h1><br />
                         <table>
                             <tr>
                                 <td className='p-2 border'>ID</td>
@@ -31,10 +38,10 @@ export default function Htrans(){
                             </tr>
 
                             {
-                                history.map((element)=>{
+                                history.map((element, key)=>{
                                     return (
                                         <>
-                                            <tr>
+                                            <tr key={key}>
                                                 <td className='p-2 border'>{element.id}</td>
                                                 <td className='p-2 border'>{element.nama}</td>
                                                 <td className='p-2 border'>{element.menu}</td>
