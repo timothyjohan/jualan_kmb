@@ -22,7 +22,9 @@ export default function Htrans(){
     const changeDate = async (date) =>{
         console.log(date);
         let queryDate = await axios.get(`http://localhost:3069/api/get/${date}`)
+        let queryDateSub = await axios.get(`http://localhost:3069/api/total/${date}`)
         setHistory(queryDate.data.htrans)
+        setTotal(queryDateSub.data.subtotal)
 
     }
     useEffect(()=>{
