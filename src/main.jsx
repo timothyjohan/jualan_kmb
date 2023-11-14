@@ -4,6 +4,7 @@ import App from './App.jsx'
 import './index.css'
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Htrans from './pages/Htrans.jsx';
+import KasirPage from './pages/KasirPage.jsx';
 // import Navbar from './components/Navbar.jsx';
 
 
@@ -14,7 +15,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Htrans/>
+        element: <KasirPage/>
       },
       {
         path: "/list",
