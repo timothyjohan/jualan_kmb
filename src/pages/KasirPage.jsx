@@ -8,7 +8,7 @@ export default function KasirPage(){
     const [subtotal, setSubtotal] = useState()
     const [menu, setMenu] = useState()
     const {register, handleSubmit} = useForm();
-
+    let tempSelect
     let tempHarga
     const handleChange = (val)=>{
         
@@ -22,6 +22,8 @@ export default function KasirPage(){
             }else if(menu == "corn_dog_s"){
                 tempHarga = 5000*val
             }else if(menu == "corn_dog_m"){
+                tempHarga = 12000*val
+            }else if(menu == "corn_dog_sm"){
                 tempHarga = 10000*val
             }
             
@@ -38,7 +40,7 @@ export default function KasirPage(){
         alert("Pesanan " + nama + " " + menu + " Masuk")
 
     }
-    const submitForm = async data => {
+    const submitForm = async (data, e) => {
         let menuString
         if(menu == "telur_gulung"){
             menuString = "Telur Gulung"
@@ -50,9 +52,13 @@ export default function KasirPage(){
             menuString = "Corn Dog Sosis"
         }else if(menu == "corn_dog_m"){
             menuString = "Corn Dog Mozzarella"
+        }else if(menu == "corn_dog_sm"){
+            menuString = "Corn Dog Sosis Mozzarella"
         }
         insertData(data.nama, menuString, data.jumlah, subtotal)
+        e.target.reset()
     }
+    
     
 
     return(
@@ -71,7 +77,8 @@ export default function KasirPage(){
                                 <option value="es_teh">Es Teh - Rp.2000</option>
                                 <option value="es_teh_refill">Es Teh (Refill) - Rp.1000</option>
                                 <option value="corn_dog_s">Corn Dog Sosis - Rp.5000</option>
-                                <option value="corn_dog_m" >Corn Dog Mozzarela - Rp.10 000</option>
+                                <option value="corn_dog_m" >Corn Dog Mozzarela - Rp.12 000</option>
+                                <option value="corn_dog_sm" >Corn Dog Sosis Mozzarela - Rp.10 000</option>
                             </select>
                         </div>
                         <div className="flex justify-center items-center my-10">
