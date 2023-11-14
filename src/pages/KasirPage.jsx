@@ -1,4 +1,29 @@
+import { useState } from "react"
+
 export default function KasirPage(){
+    const [subtotal, setSubtotal] = useState()
+    const [menu, setMenu] = useState()
+    let tempHarga
+    const handleChange = (val)=>{
+        if(val > 0){
+            if(menu == "telur_gulung"){
+                tempHarga = 1000*val
+            }else if(menu == "es_teh"){
+                tempHarga = 2000*val
+            }else if(menu == "es_teh_refill"){
+                tempHarga = 1000*val
+            }else if(menu == "corn_dog_s"){
+                tempHarga = 5000*val
+            }else if(menu == "corn_dog_m"){
+                tempHarga = 10000*val
+            }
+            
+        }else{
+            tempHarga = null
+        }
+        setSubtotal(tempHarga)
+    }
+
     return(
         <>
             <div className="w-4/6 mx-auto">
@@ -9,7 +34,8 @@ export default function KasirPage(){
                             <input type="text" name="nama" id="nama" placeholder="Nama Customer" required className="text-white bg-zinc-700 p-2 rounded-md w-5/6" />
                         </div>
                         <div className="flex justify-center items-center my-10">
-                            <select name="" id="" placeholder="Menu" required className="text-white bg-zinc-700 p-2 rounded-md w-5/6">
+                            <select name="" id="" defaultValue={"null"} placeholder="Menu" onChange={(e)=>setMenu(e.target.value)} required className="text-white bg-zinc-700 p-2 rounded-md w-5/6">
+                                <option value="null" disabled>-</option>
                                 <option value="telur_gulung">Telur Gulung - Rp.1000</option>
                                 <option value="es_teh">Es Teh - Rp.2000</option>
                                 <option value="es_teh_refill">Es Teh (Refill) - Rp.1000</option>
@@ -18,12 +44,12 @@ export default function KasirPage(){
                             </select>
                         </div>
                         <div className="flex justify-center items-center my-10">
-                            <input type="number" name="" id="" placeholder="Jumlah" required className="text-white bg-zinc-700 p-2 rounded-md w-5/6" />
+                            <input type="number" name="" id="" placeholder="Jumlah" onChange={(e)=>handleChange(e.target.value)} required className="text-white bg-zinc-700 p-2 rounded-md w-5/6" />
                         </div>
 
-                        <h1 className="text-xl text-zinc-200 text-center">Subtotal : </h1>
+                        <h1 className="text-xl text-zinc-200 text-center">Subtotal : {subtotal ? subtotal : "-"}</h1>
                         <div className="flex justify-center items-center my-10">
-                            <button className="text-white bg-zinc-700 hover:bg-zinc-500 p-4 w-5/6 rounded-md">Checkout</button>
+                            <button disabled={!subtotal ? true : false } className="text-white bg-zinc-700 hover:bg-zinc-500 p-4 w-5/6 rounded-md">Checkout</button>
 
                         </div>
                     </form>
