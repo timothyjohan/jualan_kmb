@@ -6,6 +6,7 @@ import axios from 'axios'
 
 export default function KasirPage(){
     const [subtotal, setSubtotal] = useState()
+    const [jumlah, setJumlah] = useState(0)
     const [menu, setMenu] = useState()
     const {register, handleSubmit} = useForm();
     let tempSelect
@@ -31,6 +32,7 @@ export default function KasirPage(){
             tempHarga = null
         }
         setSubtotal(tempHarga)
+        setJumlah(val)
     }
 
 
@@ -55,7 +57,8 @@ export default function KasirPage(){
         }else if(menu == "corn_dog_sm"){
             menuString = "Corn Dog Sosis Mozzarella"
         }
-        insertData(data.nama, menuString, data.jumlah, subtotal)
+        await insertData(data.nama, menuString, jumlah, subtotal)
+        setSubtotal()
         e.target.reset()
     }
     
