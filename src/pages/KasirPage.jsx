@@ -38,7 +38,7 @@ export default function KasirPage(){
 
     const insertData = async (nama, menu, jumlah, subtotal) =>{
         console.log(nama, menu, jumlah, subtotal);
-        const temp = await axios.post(`http://localhost:3069/api/${nama}/${menu}/${jumlah}/${subtotal}`)
+        const temp = await axios.post(`${import.meta.env.VITE_API_URL}/api/${nama}/${menu}/${jumlah}/${subtotal}`)
         alert("Pesanan " + nama + " " + menu + " Masuk")
 
     }

@@ -12,18 +12,18 @@ export default function Htrans(){
     const {register, handleSubmit} = useForm();
 
     const fetchHtrans = async () =>{
-        let temp = await axios.get(`http://localhost:3069/api/get`)
+        let temp = await axios.get(`${import.meta.env.VITE_API_URL}/api/get`)
         setHistory(temp.data.htrans)
     }
     const fetchTotal = async () =>{
-        let tempTotal = await axios.get('http://localhost:3069/api/total')
+        let tempTotal = await axios.get(`${import.meta.env.VITE_API_URL}/api/total`)
         setTotal(tempTotal.data.subtotal)
 
     }
     const changeDate = async (date) =>{
         console.log(date);
-        let queryDate = await axios.get(`http://localhost:3069/api/get/${date}`)
-        let queryDateSub = await axios.get(`http://localhost:3069/api/total/${date}`)
+        let queryDate = await axios.get(`${import.meta.env.VITE_API_URL}/api/get/${date}`)
+        let queryDateSub = await axios.get(`${import.meta.env.VITE_API_URL}/api/total/${date}`)
         setHistory(queryDate.data.htrans)
         setTotal(queryDateSub.data.subtotal)
         if(!date){
