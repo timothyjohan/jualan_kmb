@@ -1,19 +1,18 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import KasirPage from './pages/KasirPage'
+import RiwayatPage from './pages/RiwayatPage'
 
 function App() {
   return (
-    <Router>
-      <div className="min-h-screen bg-gray-900">
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<KasirPage />} />
-          <Route path="/kasir" element={<KasirPage />} />
-          {/* Add other routes as needed */}
-        </Routes>
-      </div>
-    </Router>
+    <BrowserRouter>
+      <Navbar />
+      <Routes>
+        <Route path="/kasir" element={<KasirPage />} />
+        <Route path="/riwayat" element={<RiwayatPage />} />
+        <Route path="/" element={<KasirPage />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 
