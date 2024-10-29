@@ -8,6 +8,7 @@ export default function KasirPage(){
     const [subtotal, setSubtotal] = useState()
     const [jumlah, setJumlah] = useState(0)
     const [menu, setMenu] = useState()
+    const [paymentMethod, setPaymentMethod] = useState('belum')
     const {register, handleSubmit} = useForm();
     let tempSelect
     let tempHarga
