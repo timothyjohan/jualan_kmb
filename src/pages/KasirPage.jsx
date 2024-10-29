@@ -23,38 +23,6 @@ const KasirPage = () => {
     ]
   }
 
-<<<<<<< Updated upstream
-export default function KasirPage(){
-    const [subtotal, setSubtotal] = useState()
-    const [jumlah, setJumlah] = useState(0)
-    const [menu, setMenu] = useState()
-    const [paymentMethod, setPaymentMethod] = useState('belum')
-    const {register, handleSubmit} = useForm();
-    let tempSelect
-    let tempHarga
-    const handleChange = (val)=>{
-        
-        if(val > 0){
-            if(menu == "telur_gulung"){
-                tempHarga = 1000*val
-            }else if(menu == "es_teh"){
-                tempHarga = 2000*val
-            }else if(menu == "es_teh_refill"){
-                tempHarga = 1000*val
-            }else if(menu == "corn_dog_s"){
-                tempHarga = 5000*val
-            }else if(menu == "corn_dog_m"){
-                tempHarga = 12000*val
-            }else if(menu == "corn_dog_sm"){
-                tempHarga = 10000*val
-            }
-            
-        }else{
-            tempHarga = null
-        }
-        setSubtotal(tempHarga)
-        setJumlah(val)
-=======
   const addToCart = (item) => {
     const existingItem = cart.find(cartItem => cartItem.id === item.id)
     if (existingItem) {
@@ -90,7 +58,6 @@ export default function KasirPage(){
     if (!customerName) {
       alert('Mohon isi nama customer!')
       return
->>>>>>> Stashed changes
     }
 
     if (cart.length === 0) {
