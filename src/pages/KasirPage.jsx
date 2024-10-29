@@ -36,31 +36,38 @@ export default function KasirPage(){
     }
 
 
-    const insertData = async (nama, menu, jumlah, subtotal) =>{
-        console.log(nama, menu, jumlah, subtotal);
-        const temp = await axios.post(`${import.meta.env.VITE_API_URL}/api/${nama}/${menu}/${jumlah}/${subtotal}`)
-        alert("Pesanan " + nama + " " + menu + " Masuk")
+    const insertData = async (nama, menu, jumlah, subtotal, jenis_pembayaran, bayar) => {
+        console.log(nama, menu, jumlah, subtotal, jenis_pembayaran, bayar);
+        const temp = await axios.post(`${import.meta.env.VITE_API_URL}/api/order`, {
+            nama,
+            menu,
+            jumlah,
+            subtotal,
+            jenis_pembayaran,
+            bayar
+        });
+        alert("Pesanan " + nama + " " + menu + " Masuk");
+    };
 
-    }
     const submitForm = async (data, e) => {
-        let menuString
-        if(menu == "telur_gulung"){
-            menuString = "Telur Gulung"
-        }else if(menu == "es_teh"){
-            menuString = "Es Teh"
-        }else if(menu == "es_teh_refill"){
-            menuString = "Es Teh (Refill)"
-        }else if(menu == "corn_dog_s"){
-            menuString = "Corn Dog Sosis"
-        }else if(menu == "corn_dog_m"){
-            menuString = "Corn Dog Mozzarella"
-        }else if(menu == "corn_dog_sm"){
-            menuString = "Corn Dog Sosis Mozzarella"
+        let menuString;
+        if (menu === "telur_gulung") {
+            menuString = "Telur Gulung";
+        } else if (menu === "es_teh") {
+            menuString = "Es Teh";
+        } else if (menu === "es_teh_refill") {
+            menuString = "Es Teh (Refill)";
+        } else if (menu === "corn_dog_s") {
+            menuString = "Corn Dog Sosis";
+        } else if (menu === "corn_dog_m") {
+            menuString = "Corn Dog Mozzarella";
+        } else if (menu === "corn_dog_sm") {
+            menuString = "Corn Dog Sosis Mozzarella";
         }
-        await insertData(data.nama, menuString, jumlah, subtotal)
-        setSubtotal()
-        e.target.reset()
-    }
+        await insertData(data.nama, menuString, jumlah, subtotal, data.jenis_pembayaran, data.bayar);
+        setSubtotal();
+        e.target.reset();
+    };
     
     
 
@@ -86,6 +93,30 @@ export default function KasirPage(){
                         </div>
                         <div className="flex justify-center items-center my-10">
                             <input type="number" name="" id="" placeholder="Jumlah" {...register("jumlah")} onChange={(e)=>handleChange(e.target.value)} required className="text-white bg-zinc-700 p-2 rounded-md w-5/6" />
+                        </div>
+
+                        <div className="flex justify-center items-center my-10">
+                            <label className="text-white mr-4">Pembayaran:</label>
+                            <div className="flex items-center mr-4">
+                                <input type="radio" id="transfer" value="transfer" {...register("jenis_pembayaran")} required className="mr-2" />
+                                <label htmlFor="transfer" className="text-white">Transfer</label>
+                            </div>
+                            <div className="flex items-center">
+                                <input type="radio" id="cash" value="cash" {...register("jenis_pembayaran")} required className="mr-2" />
+                                <label htmlFor="cash" className="text-white">Cash</label>
+                            </div>
+                        </div>
+
+                        <div className="flex justify-center items-center my-10">
+                            <label className="text-white mr-4">Bayar:</label>
+                            <div className="flex items-center mr-4">
+                                <input type="radio" id="bayar_sekarang" value={true} {...register("bayar")} required className="mr-2" />
+                                <label htmlFor="bayar_sekarang" className="text-white">Bayar Sekarang</label>
+                            </div>
+                            <div className="flex items-center">
+                                <input type="radio" id="bayar_nanti" value={false} {...register("bayar")} required className="mr-2" />
+                                <label htmlFor="bayar_nanti" className="text-white">Bayar Nanti</label>
+                            </div>
                         </div>
 
                         <h1 className="text-xl text-zinc-200 text-center">Subtotal : {subtotal ? subtotal : "-"}</h1>
