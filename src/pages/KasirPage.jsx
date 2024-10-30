@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import axios from 'axios'
+import toast from 'react-hot-toast'
 
 const KasirPage = () => {
   const [cart, setCart] = useState([])
@@ -56,42 +57,97 @@ const KasirPage = () => {
 
   const handleSaveOrder = async () => {
     if (!customerName) {
-      alert('Mohon isi nama customer!')
+      toast.error('Mohon isi nama customer!', {
+        position: 'bottom-left',
+        style: {
+          background: '#1F2937',
+          color: '#fff',
+          padding: '16px',
+          borderRadius: '10px',
+        },
+        iconTheme: {
+          primary: '#ef4444',
+          secondary: '#fff',
+        },
+      })
       return
     }
 
     if (cart.length === 0) {
-      alert('Keranjang masih kosong!')
+      toast.error('Keranjang masih kosong!', {
+        position: 'bottom-left',
+        style: {
+          background: '#1F2937',
+          color: '#fff',
+          padding: '16px',
+          borderRadius: '10px',
+        },
+        iconTheme: {
+          primary: '#ef4444',
+          secondary: '#fff',
+        },
+      })
       return
     }
 
     setIsLoading(true)
     try {
+      const menuString = cart.map(item => 
+        `${item.name} (${item.quantity}x @ Rp${formatRupiah(item.price)})`
+      ).join('\n')
+
+      const totalJumlah = cart.reduce((sum, item) => sum + item.quantity, 0)
+
+      const totalHarga = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0)
+
       const orderData = {
-        customer_name: customerName,
-        items: cart.map(item => ({
-          product_id: item.id,
-          product_name: item.name,
-          quantity: item.quantity,
-          price: item.price,
-          subtotal: item.price * item.quantity
-        })),
-        total_amount: total,
-        payment_method: paymentMethod,
-        order_date: new Date().toISOString()
+        nama: customerName,
+        menu: menuString,
+        jumlah: totalJumlah,
+        total: totalHarga,
+        subtotal: totalHarga,
+        tanggal: new Date().toISOString().split('T')[0],
+        jenis_pembayaran: paymentMethod,
+        delivered: false
       }
 
-      const response = await axios.post('http://localhost:3000/api/orders', orderData)
+      console.log('Data yang akan dikirim:', orderData)
       
-      if (response.status === 201 || response.status === 200) {
-        alert('Pesanan berhasil disimpan!')
-        // Reset form
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000'
+      const response = await axios.post(`${API_URL}/api/htrans/order`, orderData)
+      
+      if (response.status === 201) {
+        toast.success('Pesanan berhasil disimpan!', {
+          position: 'bottom-left',
+          style: {
+            background: '#065F46',
+            color: '#fff',
+            padding: '16px',
+            borderRadius: '10px',
+          },
+          iconTheme: {
+            primary: '#fff',
+            secondary: '#065F46',
+          },
+        })
         setCart([])
         setCustomerName('')
+        setPaymentMethod('belum')
       }
     } catch (error) {
-      console.error('Error saving order:', error)
-      alert('Gagal menyimpan pesanan: ' + error.message)
+      toast.error(`Gagal menyimpan pesanan: ${error.response?.data?.message || error.message}`, {
+        position: 'bottom-left',
+        style: {
+          background: '#1F2937',
+          color: '#fff',
+          padding: '16px',
+          borderRadius: '10px',
+        },
+        iconTheme: {
+          primary: '#ef4444',
+          secondary: '#fff',
+        },
+      })
     } finally {
       setIsLoading(false)
     }
