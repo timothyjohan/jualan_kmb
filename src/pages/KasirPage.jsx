@@ -187,7 +187,7 @@ const KasirPage = () => {
           {cart.map(item => (
             <div 
               key={item.id} 
-              className="grid grid-cols-4 md:grid-cols-5 items-center py-3 px-2 border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-750"
+              className="grid grid-cols-4 md:grid-cols-5 items-center py-3 px-2 border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700"
             >
               <div>{item.name}</div>
               <div>Rp {formatRupiah(item.price)}</div>
@@ -196,7 +196,7 @@ const KasirPage = () => {
                   type="number"
                   value={item.quantity}
                   onChange={(e) => updateQuantity(item.id, parseInt(e.target.value))}
-                  className="w-12 md:w-16 bg-gray-700 p-1 rounded"
+                  className="w-12 md:w-16 bg-gray-50 dark:bg-gray-700 p-1 rounded"
                   min="1"
                 />
               </div>

@@ -17,14 +17,16 @@ const RiwayatPage = () => {
 
   const formatDate = (dateString) => {
     const date = new Date(dateString)
-    return date.toLocaleString('id-ID', {
+    // Convert to UTC+7
+    const utc7Date = new Date(date.getTime() + 0 * 60 * 60 * 1000)
+    return utc7Date.toLocaleString('id-ID', {
       day: '2-digit',
       month: '2-digit',
       year: 'numeric',
       hour: '2-digit',
       minute: '2-digit',
       second: '2-digit'
-    })
+    }).replace(/:/g, '.')
   }
 
   const fetchOrders = async () => {
@@ -241,7 +243,7 @@ const RiwayatPage = () => {
                     </button>
                   </div>
                   <div>{order.nama}</div>
-                  <div>{formatDate(order.tanggal)}</div>
+                  <div>{formatDate(order.createdAt)}</div>
                   <div>Rp {formatRupiah(order.subtotal)}</div>
                   <div className="flex justify-center gap-2">
                     <select
@@ -281,17 +283,17 @@ const RiwayatPage = () => {
                 </div>
 
                 {selectedOrder?._id === order._id && (
-                  <div className="bg-gray-800 p-4 mx-4 rounded-lg shadow-lg">
+                  <div className="bg-white dark:bg-gray-800 p-4 mx-4 rounded-lg shadow-lg">
                     {/* Card Header */}
-                    <div className="bg-gray-900 rounded-t-lg p-4">
+                    <div className="bg-gray-100 dark:bg-gray-900 rounded-t-lg p-4">
                       <h3 className="text-xl text-blue-400">Detail Order</h3>
                     </div>
 
                     {/* Card Content */}
-                    <div className="bg-gray-700 p-4">
+                    <div className="bg-white dark:bg-gray-700 p-4">
                       {/* Menu Header */}
-                      <div className="bg-gray-800 p-3 rounded-lg mb-2">
-                        <div className="grid grid-cols-4 text-white font-semibold">
+                      <div className="bg-gray-100 dark:bg-gray-800 p-3 rounded-lg mb-2">
+                        <div className="grid grid-cols-4 dark:text-white font-semibold">
                           <div>Produk</div>
                           <div>Jumlah</div>
                           <div>Harga</div>
@@ -307,20 +309,20 @@ const RiwayatPage = () => {
                           const price = item.match(/Rp([\d,.]+)/)?.[1] || '0';
                           const subtotal = parseInt(price.replace(/\./g, '')) * parseInt(quantity);
                           
-                          return (
+                            return (
                             <div key={index} className="grid grid-cols-4 py-2 border-b border-gray-600">
-                              <div className="text-white">{menuName}</div>
-                              <div className="text-white">{quantity}</div>
-                              <div className="text-white">Rp {price}</div>
-                              <div className="text-blue-400">Rp {formatRupiah(subtotal)}</div>
+                              <div className="text-gray-900 dark:text-white">{menuName}</div>
+                              <div className="text-gray-900 dark:text-white">{quantity}</div>
+                              <div className="text-gray-900 dark:text-white">Rp {price}</div>
+                              <div className="text-blue-500 dark:text-blue-400">Rp {formatRupiah(subtotal)}</div>
                             </div>
-                          );
+                            );
                         })}
                       </div>
 
                       {/* Card Footer with Total */}
-                      <div className="bg-gray-800 mt-4 p-3 rounded-lg flex justify-between items-center">
-                        <div className="text-white font-semibold">Total</div>
+                      <div className="bg-gray-100 dark:bg-gray-800 mt-4 p-3 rounded-lg flex justify-between items-center">
+                        <div className="dark:text-white font-semibold">Total</div>
                         <div className="text-blue-400 text-xl font-bold">
                           Rp {formatRupiah(order.subtotal)}
                         </div>
