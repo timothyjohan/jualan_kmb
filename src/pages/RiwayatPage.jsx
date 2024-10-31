@@ -32,7 +32,7 @@ const RiwayatPage = () => {
       const date = new Date(selectedDate)
       const formattedDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
       
-      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000'
+      const API_URL = import.meta.env.VITE_API_URL
       
       const response = await axios.get(`${API_URL}/api/htrans/get/${formattedDate}`)
       setOrders(response.data.htrans)
@@ -124,11 +124,13 @@ const RiwayatPage = () => {
     });
   };
 
-  const handleUpdatePayment = async (orderId) => {
+  const handleUpdatePayment = async (orderId, jenis_pembayaran) => {
     try {
-      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000'
-      await axios.put(`${API_URL}/api/htrans/bayar/${orderId}`)
-      fetchOrders()
+      const API_URL = import.meta.env.VITE_API_URL;
+      await axios.put(`${API_URL}/api/htrans/bayar/${orderId}`, {
+        jenis_pembayaran
+      });
+      fetchOrders();
       toast.success('Status pembayaran berhasil diupdate!', {
         style: {
           borderRadius: '10px',
@@ -243,16 +245,16 @@ const RiwayatPage = () => {
                   <div className="flex justify-center gap-2">
                     <select
                       value={order.jenis_pembayaran}
-                      onChange={(e) => handleUpdatePayment(order._id)}
+                      onChange={(e) => handleUpdatePayment(order._id, e.target.value)}
                       className={`rounded px-2 py-1 text-sm ${
-                        !order.bayar 
+                        order.jenis_pembayaran == "pending" 
                           ? 'bg-orange-500' 
                           : order.jenis_pembayaran === 'tunai'
                           ? 'bg-green-500'
                           : 'bg-blue-500'
                       } text-white`}
                     >
-                      <option value="belum">Pending</option>
+                      <option value="pending">Pending</option>
                       <option value="tunai">Tunai</option>
                       <option value="transfer">Transfer</option>
                     </select>
