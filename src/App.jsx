@@ -1,10 +1,30 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
+import { useEffect } from 'react'
 import Navbar from './components/Navbar'
 import KasirPage from './pages/KasirPage'
 import RiwayatPage from './pages/RiwayatPage'
+import Login from './pages/Login'
+import Register from './pages/Register'
+
+// Komponen untuk protected route
+const ProtectedRoute = ({ children }) => {
+  const token = localStorage.getItem('token')
+  
+  if (!token) {
+    return <Navigate to="/login" />
+  }
+  
+  return children
+}
 
 function App() {
+  // Tambahkan useEffect untuk set dark mode
+  useEffect(() => {
+    // Set dark mode secara default
+    document.documentElement.classList.add('dark')
+  }, [])
+
   return (
     <BrowserRouter>
       <Toaster 
@@ -47,11 +67,37 @@ function App() {
           },
         }}
       />
-      <Navbar />
+      
+      {/* Update kondisi render Navbar */}
+      {!window.location.pathname.match(/\/(login|register)/) && <Navbar />}
+      
       <Routes>
-        <Route path="/kasir" element={<KasirPage />} />
-        <Route path="/riwayat" element={<RiwayatPage />} />
-        <Route path="/" element={<KasirPage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route 
+          path="/kasir" 
+          element={
+            <ProtectedRoute>
+              <KasirPage />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/riwayat" 
+          element={
+            <ProtectedRoute>
+              <RiwayatPage />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/" 
+          element={
+            <ProtectedRoute>
+              <KasirPage />
+            </ProtectedRoute>
+          } 
+        />
       </Routes>
     </BrowserRouter>
   )
