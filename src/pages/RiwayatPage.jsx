@@ -224,8 +224,7 @@ const RiwayatPage = () => {
           </div>
         ) : (
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 mb-6">
-            <div className="grid grid-cols-6 p-4 bg-blue-100 dark:bg-blue-900 text-gray-900 dark:text-white font-bold border-b border-gray-200 dark:border-gray-700 text-center">
-              <div>Detail Order</div>
+            <div className="grid grid-cols-5 p-4 bg-blue-100 dark:bg-blue-900 text-gray-900 dark:text-white font-bold border-b border-gray-200 dark:border-gray-700 text-center">
               <div>Nama Customer</div>
               <div>Tanggal</div>
               <div>Total</div>
@@ -234,7 +233,19 @@ const RiwayatPage = () => {
             </div>
 
             {orders.map(order => (
-              <div key={order._id} className="border-b border-gray-200 dark:border-gray-700 last:border-b-0">
+              <div
+                key={order._id}
+                className={`border-b border-gray-200 dark:border-gray-700 last:border-b-0 ${
+                  selectedOrder?._id === order._id ? 'bg-gray-100 dark:bg-gray-800' : ''
+                }`}
+                onClick={(e) => {
+                  // Cegah klik jika berasal dari tombol di dalam row
+                  if (e.target.tagName === 'BUTTON' || e.target.tagName === 'SELECT' || e.target.closest('button')) {
+                    return;
+                  }
+                  setSelectedOrder(selectedOrder?._id === order._id ? null : order);
+                }}
+              >
                 <div className="grid grid-cols-6 p-4 items-center text-center">
                   <div className="flex justify-center">
                     <button
@@ -252,8 +263,8 @@ const RiwayatPage = () => {
                       value={order.jenis_pembayaran}
                       onChange={(e) => handleUpdatePayment(order._id, e.target.value)}
                       className={`rounded px-2 py-1 text-sm ${
-                        order.jenis_pembayaran == "pending" 
-                          ? 'bg-orange-500' 
+                        order.jenis_pembayaran === "pending"
+                          ? 'bg-orange-500'
                           : order.jenis_pembayaran === 'tunai'
                           ? 'bg-green-500'
                           : 'bg-blue-500'
@@ -267,8 +278,19 @@ const RiwayatPage = () => {
                       onClick={() => handleDelete(order._id)}
                       className="text-red-500 hover:text-red-700"
                     >
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-6 w-6"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                        />
                       </svg>
                     </button>
                   </div>
