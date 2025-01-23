@@ -32,7 +32,9 @@ const RiwayatPage = () => {
   const fetchOrders = async () => {
     try {
       const date = new Date(selectedDate)
-      const formattedDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
+      
+      // Format tanggal dengan padding 2 digit untuk tanggal dan bulan
+      const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
       
       const API_URL = import.meta.env.VITE_API_URL
       
