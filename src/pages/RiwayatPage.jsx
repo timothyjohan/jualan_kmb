@@ -224,8 +224,7 @@ const RiwayatPage = () => {
           </div>
         ) : (
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 mb-6">
-            <div className="grid grid-cols-6 p-4 bg-blue-100 dark:bg-blue-900 text-gray-900 dark:text-white font-bold border-b border-gray-200 dark:border-gray-700 text-center">
-              <div>Detail Order</div>
+            <div className="grid grid-cols-5 p-4 bg-blue-100 dark:bg-blue-900 text-gray-900 dark:text-white font-bold border-b border-gray-200 dark:border-gray-700 text-center">
               <div>Nama Customer</div>
               <div>Tanggal</div>
               <div>Total</div>
@@ -234,16 +233,20 @@ const RiwayatPage = () => {
             </div>
 
             {orders.map(order => (
-              <div key={order._id} className="border-b border-gray-200 dark:border-gray-700 last:border-b-0">
-                <div className="grid grid-cols-6 p-4 items-center text-center">
-                  <div className="flex justify-center">
-                    <button
-                      onClick={() => setSelectedOrder(selectedOrder?._id === order._id ? null : order)}
-                      className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
-                    >
-                      Detail
-                    </button>
-                  </div>
+              <div
+                key={order._id}
+                className={`border-b border-gray-200 dark:border-gray-700 last:border-b-0 ${
+                  selectedOrder?._id === order._id ? 'bg-gray-100 dark:bg-gray-800' : ''
+                }`}
+                onClick={(e) => {
+                  // Pastikan hanya klik row yang memicu event, bukan elemen dalam row seperti tombol atau select
+                  if (e.target.tagName === 'BUTTON' || e.target.tagName === 'SELECT' || e.target.closest('button')) {
+                    return;
+                  }
+                  setSelectedOrder(selectedOrder?._id === order._id ? null : order);
+                }}
+              >
+                <div className="grid grid-cols-5 p-4 items-center text-center">
                   <div>{order.nama}</div>
                   <div>{formatDate(order.createdAt)}</div>
                   <div>Rp {formatRupiah(order.subtotal)}</div>
@@ -252,8 +255,8 @@ const RiwayatPage = () => {
                       value={order.jenis_pembayaran}
                       onChange={(e) => handleUpdatePayment(order._id, e.target.value)}
                       className={`rounded px-2 py-1 text-sm ${
-                        order.jenis_pembayaran == "pending" 
-                          ? 'bg-orange-500' 
+                        order.jenis_pembayaran === 'pending'
+                          ? 'bg-orange-500'
                           : order.jenis_pembayaran === 'tunai'
                           ? 'bg-green-500'
                           : 'bg-blue-500'
@@ -267,8 +270,19 @@ const RiwayatPage = () => {
                       onClick={() => handleDelete(order._id)}
                       className="text-red-500 hover:text-red-700"
                     >
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-6 w-6"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                        />
                       </svg>
                     </button>
                   </div>
@@ -286,14 +300,12 @@ const RiwayatPage = () => {
 
                 {selectedOrder?._id === order._id && (
                   <div className="bg-white dark:bg-gray-800 p-4 mx-4 rounded-lg shadow-lg">
-                    {/* Card Header */}
+                    {/* Detail Content */}
                     <div className="bg-gray-100 dark:bg-gray-900 rounded-t-lg p-4">
                       <h3 className="text-xl text-blue-400">Detail Order</h3>
                     </div>
 
-                    {/* Card Content */}
                     <div className="bg-white dark:bg-gray-700 p-4">
-                      {/* Menu Header */}
                       <div className="bg-gray-100 dark:bg-gray-800 p-3 rounded-lg mb-2">
                         <div className="grid grid-cols-4 dark:text-white font-semibold">
                           <div>Produk</div>
@@ -303,26 +315,29 @@ const RiwayatPage = () => {
                         </div>
                       </div>
 
-                      {/* Menu Items */}
                       <div className="space-y-2">
                         {order.menu.split('\n').map((item, index) => {
                           const menuName = item.split(' (')[0];
                           const quantity = item.match(/\((\d+)x/)?.[1] || '1';
                           const price = item.match(/Rp([\d,.]+)/)?.[1] || '0';
                           const subtotal = parseInt(price.replace(/\./g, '')) * parseInt(quantity);
-                          
-                            return (
-                            <div key={index} className="grid grid-cols-4 py-2 border-b border-gray-600">
+
+                          return (
+                            <div
+                              key={index}
+                              className="grid grid-cols-4 py-2 border-b border-gray-600"
+                            >
                               <div className="text-gray-900 dark:text-white">{menuName}</div>
                               <div className="text-gray-900 dark:text-white">{quantity}</div>
                               <div className="text-gray-900 dark:text-white">Rp {price}</div>
-                              <div className="text-blue-500 dark:text-blue-400">Rp {formatRupiah(subtotal)}</div>
+                              <div className="text-blue-500 dark:text-blue-400">
+                                Rp {formatRupiah(subtotal)}
+                              </div>
                             </div>
-                            );
+                          );
                         })}
                       </div>
 
-                      {/* Card Footer with Total */}
                       <div className="bg-gray-100 dark:bg-gray-800 mt-4 p-3 rounded-lg flex justify-between items-center">
                         <div className="dark:text-white font-semibold">Total</div>
                         <div className="text-blue-400 text-xl font-bold">
@@ -334,6 +349,7 @@ const RiwayatPage = () => {
                 )}
               </div>
             ))}
+
           </div>
         )}
       </div>
