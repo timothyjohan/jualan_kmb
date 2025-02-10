@@ -111,7 +111,6 @@ const KasirPage = () => {
         delivered: false
       }
 
-      // yes
       console.log('Data yang akan dikirim:', orderData)
       
       const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000'
